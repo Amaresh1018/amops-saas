@@ -1,11 +1,12 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { ArrowDown, ArrowRight, ArrowUpRight, Check, Code2, Layers3, LockKeyhole, Network, Search, ShieldCheck, Users } from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowUpRight, Code2, Layers3, LockKeyhole, Network, Search, ShieldCheck, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ConnectedProject } from "./ConnectedProject";
-import { moduleGroups, project, storySteps } from "./content";
+import { moduleGroups, storySteps } from "./content";
+import { WorkflowNarrative } from "./WorkflowNarrative";
 import styles from "./landing.module.css";
 
 interface LandingPageProps {
@@ -20,8 +21,7 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
   const [activeStep, setActiveStep] = useState(0);
   const [playing, setPlaying] = useState(true);
   const advance = useCallback(() => setActiveStep(step => (step + 1) % storySteps.length), []);
-  const selectStep = (index: number) => { setActiveStep(index); setPlaying(false); };
-  const step = storySteps[activeStep];
+  const selectStep = useCallback((index: number) => { setActiveStep(index); setPlaying(false); }, []);
   return (
     <div className={styles.landing}>
       <a className={styles.skipLink} href="#main">Skip to content</a>
@@ -50,13 +50,7 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
 
         <section id="workflow" className={styles.container + " " + styles.section} aria-labelledby="workflow-title">
           <div className={styles.sectionHeading}><div><span className={styles.eyebrow}>01 / FOLLOW THE WORK</span><h2 id="workflow-title">One project.<br /><span>Every handoff, connected.</span></h2></div><p>A brief becomes a task. A conversation shapes the solution. Code delivers it. Follow one example through the amops vision.</p></div>
-          <div className={styles.workflow}>
-            <div className={styles.workflowTabs} aria-label="Workflow steps">{storySteps.map((item, index) => <button key={item.id} aria-pressed={index === activeStep} aria-controls="workflow-detail" onClick={() => selectStep(index)}><span className={styles.stepNumber}>0{index + 1}</span><item.icon size={18} /><span>{item.label}</span><ArrowUpRight size={16} /></button>)}</div>
-            <div className={styles.workflowDetail} id="workflow-detail" aria-live="polite">
-              <div className={styles.workflowCopy} key={step.id}><span className={styles.status}>Illustrative workflow</span><h3>{step.title}</h3><p>{step.description}</p><div className={styles.contextLabel}><Network size={16} aria-hidden="true" /><span>{step.context}</span></div></div>
-              <div className={styles.workflowExample}><div className={styles.exampleHeader}><step.icon size={18} /><span>{step.artifact}</span><span>{project.task}</span></div><h4>{step.artifactTitle}</h4>{step.lines.map(line => <p key={line}><Check size={15} />{line}</p>)}<div className={styles.exampleFoot}><span className={styles.avatar}>AK</span><span>{project.name}</span><ArrowUpRight size={16} /></div></div>
-            </div>
-          </div>
+          <WorkflowNarrative activeStep={activeStep} onSelectStep={selectStep} />
         </section>
 
         <section id="product" className={styles.container + " " + styles.section} aria-labelledby="product-title">

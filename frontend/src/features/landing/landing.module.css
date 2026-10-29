@@ -14,6 +14,8 @@
   overflow: clip;
   font-size: 14px;
   line-height: 1.6;
+  background-image: linear-gradient(to right, color-mix(in srgb, var(--border) 48%, transparent) 1px, transparent 1px);
+  background-size: min(25vw, 320px) 100%;
 }
 .landing * { box-sizing: border-box; }
 .landing a, .landing button { -webkit-tap-highlight-color: transparent; }
@@ -31,10 +33,10 @@
 .navLinks a:hover, .footer a:hover { color: var(--foreground); }
 .navActions { gap: 16px; }
 .previewButton { height: 44px; padding-inline: 20px; border-radius: 8px; gap: 16px; font-size: 13px; }
-.hero { padding-block: 80px 72px; display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; gap: 48px; }
+.hero { padding-block: 44px 80px; display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; gap: 56px; min-height: min(710px, calc(100svh - 80px)); }
 .announcement { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; color: var(--muted-foreground); margin-bottom: 28px; }
 .projectDot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; background: var(--primary); flex-shrink: 0; }
-.hero h1 { font-size: var(--display-size); line-height: 1.08; font-weight: 550; letter-spacing: -.065em; margin: 0; }
+.hero h1 { font-size: var(--display-size); line-height: 1.03; font-weight: 550; letter-spacing: -.072em; margin: 0; text-wrap: balance; }
 .hero h1 > span, .sectionHeading h2 span, .architecture h2 span, .closing h2 span { color: var(--muted-foreground); }
 .heroCopy > p { max-width: 440px; margin-top: 28px; color: var(--muted-foreground); font-size: 16px; line-height: 1.8; }
 .heroActions { display: flex; align-items: center; gap: 24px; margin-top: 32px; flex-wrap: wrap; }
@@ -93,6 +95,48 @@
 .sectionHeading h2, .architecture h2, .closing h2 { margin-top: 20px; font-size: var(--heading-size); line-height: 1.15; letter-spacing: -.055em; font-weight: 500; }
 .sectionHeading > p { max-width: 320px; font-size: 14px; line-height: 1.8; color: var(--muted-foreground); padding-bottom: 4px; }
 .workflow { border: 1px solid var(--strong-border); border-radius: 12px; overflow: hidden; }
+.workflowNarrative { display: grid; grid-template-columns: minmax(360px, .9fr) minmax(0, 1fr); gap: clamp(40px, 8vw, 128px); align-items: start; }
+.workflowScene { position: sticky; top: 104px; overflow: hidden; min-height: 560px; border: 1px solid var(--strong-border); border-radius: 16px; background: radial-gradient(circle at 50% 38%, var(--soft-primary), var(--card) 70%); box-shadow: 0 28px 70px color-mix(in srgb, var(--foreground) 8%, transparent); }
+.sceneMeta { display: flex; justify-content: space-between; gap: 16px; padding: 16px 20px; border-bottom: 1px solid var(--border); font-family: var(--font-mono); font-size: 10px; color: var(--muted-foreground); }
+.sceneProgress { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 20px; }
+.sceneProgress span { height: 2px; background: var(--border); transition: background-color var(--motion-story), box-shadow var(--motion-story); }
+.sceneProgress span[data-active="true"] { background: var(--primary); box-shadow: 0 0 16px color-mix(in srgb, var(--primary) 60%, transparent); }
+.sceneTabs { display: grid; grid-template-columns: repeat(4, 1fr); margin-inline: 20px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: color-mix(in srgb, var(--background) 60%, transparent); }
+.sceneTabs button { display: grid; place-items: center; gap: 5px; min-height: 58px; padding: 8px 4px; color: var(--muted-foreground); font-size: 9px; cursor: pointer; transition: color var(--motion-standard), background-color var(--motion-standard); }
+.sceneTabs button + button { border-left: 1px solid var(--border); }
+.sceneTabs button[aria-pressed="true"] { color: var(--foreground); background: var(--soft-primary); }
+.sceneCanvas { position: relative; min-height: 310px; margin: 24px 20px 0; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background-image: radial-gradient(color-mix(in srgb, var(--primary) 24%, transparent) 1px, transparent 1px); background-size: 16px 16px; }
+.sceneCanvas::before { content: ""; position: absolute; inset: 0; background: linear-gradient(130deg, transparent 48%, color-mix(in srgb, var(--primary) 10%, transparent) 49%, transparent 50%); opacity: .9; }
+.sceneNode, .sceneCurrent { position: absolute; display: flex; flex-direction: column; gap: 5px; padding: 13px; border: 1px solid var(--strong-border); border-radius: 9px; background: var(--card); box-shadow: 0 14px 34px color-mix(in srgb, var(--foreground) 8%, transparent); }
+.sceneNode { width: 47%; font-size: 10px; color: var(--muted-foreground); transition: transform var(--motion-story), opacity var(--motion-story); }
+.sceneNode strong, .sceneCurrent strong { color: var(--foreground); font-size: 11px; font-weight: 600; letter-spacing: -.02em; }
+.sceneNode[data-kind="brief"] { top: 30px; left: 6%; transform: rotate(-3deg); }
+.sceneNode[data-kind="task"] { right: 6%; bottom: 34px; transform: rotate(3deg); }
+.sceneLink { position: absolute; top: 47%; left: 50%; display: grid; place-items: center; width: 34px; height: 34px; transform: translate(-50%, -50%); color: var(--primary); border: 1px solid color-mix(in srgb, var(--primary) 40%, var(--border)); background: var(--background); border-radius: 50%; z-index: 2; animation: scene-pulse 2.8s ease-in-out infinite; }
+.sceneCurrent { top: 43%; left: 50%; width: 65%; transform: translate(-50%, -50%); z-index: 3; animation: scene-in var(--motion-story) cubic-bezier(.2,.8,.2,1); }
+.sceneCurrent > div { display: flex; align-items: center; gap: 7px; color: var(--primary); font-size: 10px; }
+.sceneCurrent > span { color: var(--muted-foreground); font-size: 10px; }
+.sceneCanvas[data-story-state="1"] .sceneNode[data-kind="brief"] { transform: translateY(-10px) rotate(-5deg); opacity: .72; }
+.sceneCanvas[data-story-state="2"] .sceneNode[data-kind="task"] { transform: translateY(-12px) rotate(5deg); border-color: color-mix(in srgb, var(--primary) 55%, var(--border)); }
+.sceneCanvas[data-story-state="3"] .sceneNode { opacity: .72; transform: translateY(8px) rotate(0); }
+.sceneCaption { display: flex; align-items: center; gap: 8px; padding: 18px 20px; color: var(--muted-foreground); font-size: 11px; }
+.sceneCaption svg { color: var(--primary); }
+.storySteps { position: relative; }
+.storySteps::before { content: ""; position: absolute; top: 0; bottom: 0; left: 9px; width: 1px; background: linear-gradient(var(--primary), var(--border) 30%, var(--border)); }
+.storyStep { position: relative; min-height: 530px; padding: 36px 0 60px 48px; opacity: .38; transition: opacity var(--motion-story), transform var(--motion-story); }
+.storyStep::before { content: ""; position: absolute; top: 42px; left: 4px; width: 11px; height: 11px; border: 2px solid var(--background); border-radius: 50%; background: var(--muted-foreground); transition: background-color var(--motion-story), box-shadow var(--motion-story); }
+.storyStep[data-active="true"] { opacity: 1; transform: translateX(6px); }
+.storyStep[data-active="true"]::before { background: var(--primary); box-shadow: 0 0 0 5px var(--soft-primary), 0 0 22px color-mix(in srgb, var(--primary) 70%, transparent); }
+.storyIndex { display: block; color: var(--muted-foreground); font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; margin-bottom: 22px; }
+.storyStep > svg { color: var(--primary); margin-bottom: 18px; }
+.storyStep h3 { max-width: 410px; font-size: clamp(27px, 3vw, 42px); font-weight: 500; line-height: 1.08; letter-spacing: -.055em; }
+.storyStep > p { max-width: 440px; margin-top: 18px; color: var(--muted-foreground); font-size: 14px; line-height: 1.8; }
+.storyEvidence { display: grid; gap: 8px; max-width: 430px; margin-top: 26px; padding: 18px; border: 1px solid var(--border); border-radius: 10px; background: color-mix(in srgb, var(--card) 82%, transparent); }
+.storyEvidence > div { display: flex; justify-content: space-between; gap: 12px; color: var(--muted-foreground); font-family: var(--font-mono); font-size: 10px; }
+.storyEvidence p, .storyEvidence > span { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--muted-foreground); }
+.storyEvidence p svg, .storyEvidence > span svg { color: var(--primary); }
+.storyStep > button { display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; color: var(--foreground); font-size: 12px; cursor: pointer; }
+.storyStep > button:hover { color: var(--primary); }
 .workflowTabs { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--border); background: var(--card); }
 .workflowTabs button { padding: 20px; display: flex; gap: 12px; align-items: center; color: var(--muted-foreground); font-size: 13px; border-bottom: 2px solid transparent; cursor: pointer; }
 .workflowTabs button + button { border-left: 1px solid var(--border); }
@@ -152,6 +196,8 @@
 .skipLink { position: fixed; top: 8px; left: 8px; transform: translateY(-200%); z-index: 100; background: var(--card); padding: 12px 24px; border: 1px solid var(--ring); border-radius: 8px; }
 .skipLink:focus { transform: translateY(0); }
 @keyframes artifact-in { from { opacity: .6; transform: translateY(8px) rotateY(8deg) rotateZ(-3deg); } to { opacity: 1; transform: translateY(0) rotateY(8deg) rotateZ(-3deg); } }
+@keyframes scene-in { from { opacity: 0; transform: translate(-50%, calc(-50% + 18px)) scale(.96); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+@keyframes scene-pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--primary) 40%, transparent); } 50% { box-shadow: 0 0 0 9px color-mix(in srgb, var(--primary) 0%, transparent); } }
 @media (max-width: 1100px) {
   .brandSuffix { display: none; }
   .hero { gap: 24px; }
@@ -166,7 +212,7 @@
   .architecture { gap: 48px; }
 }
 @media (max-width: 850px) {
-  .hero { grid-template-columns: 1fr; padding-top: 48px; gap: 48px; }
+  .hero { grid-template-columns: 1fr; padding-top: 40px; gap: 48px; }
   .heroCopy { max-width: 600px; }
   .heroCopy > p { max-width: 520px; }
   .desktopBreak { display: none; }
@@ -176,6 +222,10 @@
   .manifesto > span { display: none; }
   .sectionHeading { gap: 24px; }
   .sectionHeading > p { max-width: 260px; font-size: 12px; }
+  .workflowNarrative { grid-template-columns: 1fr; gap: 20px; }
+  .workflowScene { position: relative; top: auto; min-height: 0; }
+  .sceneCanvas { min-height: 280px; }
+  .storyStep { min-height: 420px; }
   .moduleGrid { grid-template-columns: 1fr; }
   .moduleCard + .moduleCard { border-left: 0; border-top: 1px solid var(--border); }
   .moduleCard > p { max-width: none; min-height: 0; }
@@ -196,6 +246,7 @@
   .brandMark { width: 28px; height: 28px; }
   .announcement { font-size: 10px; margin-bottom: 24px; }
   .hero { padding-bottom: 40px; }
+  .hero { min-height: auto; }
   .heroCopy > p { font-size: 14px; }
   .heroActions { gap: 20px; }
   .previewNote { font-size: 10px; gap: 8px; }
@@ -217,6 +268,19 @@
   .sectionHeading { display: block; }
   .sectionHeading > p { max-width: none; margin-top: 24px; font-size: 14px; }
   .workflowTabs { grid-template-columns: 1fr 1fr; }
+  .workflowScene { border-radius: 12px; }
+  .sceneMeta, .sceneCaption { padding-inline: 14px; }
+  .sceneProgress { padding: 14px; }
+  .sceneTabs { margin-inline: 14px; }
+  .sceneTabs button { min-height: 52px; }
+  .sceneTabs button span { font-size: 8px; }
+  .sceneCanvas { min-height: 260px; margin: 18px 14px 0; }
+  .sceneCurrent { width: 78%; }
+  .sceneNode { width: 55%; }
+  .storyStep { min-height: 0; padding: 26px 0 56px 34px; opacity: 1; }
+  .storySteps::before { left: 6px; }
+  .storyStep::before { top: 31px; left: 1px; }
+  .storyStep h3 { font-size: 29px; }
   .workflowTabs button { padding: 16px 12px; font-size: 11px; }
   .workflowTabs button:nth-child(3) { border-left: 0; }
   .workflowTabs button > svg:last-child { display: none; }
@@ -239,4 +303,5 @@
 @media (prefers-reduced-motion: reduce) {
   .landing *, .landing *::before, .landing *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   .artifactCard, .taskCard { transform: none; }
+  .storyStep { opacity: 1; transform: none; }
 }
