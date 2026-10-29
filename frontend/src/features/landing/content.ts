@@ -1,0 +1,19 @@
+import { BookOpen, BriefcaseBusiness, FileText, GitPullRequest, Layers3, MessageSquare } from "lucide-react";
+
+export const project = { name: "Customer portal launch", task: "AMP-104", taskTitle: "Build the client overview" };
+
+export const storySteps = [
+  { id: "plan", label: "Plan", icon: FileText, title: "Give every task a starting point.", description: "Turn a project brief into focused work. Keep requirements, decisions, and acceptance criteria connected to the task they shaped.", artifact: "Project brief", artifactTitle: "A clearer view for every client", detail: "Clients need one place to review deliverables and follow project progress.", result: "Requirement linked", context: "Brief → Task", status: "Ready to build", lines: ["Project progress at a glance", "Deliverables ready for review", "A clear next step"] },
+  { id: "collaborate", label: "Collaborate", icon: MessageSquare, title: "Keep the conversation with the work.", description: "Bring the discussion back to its task. Your team can understand what was decided, who is involved, and why the direction changed.", artifact: "Project discussion", artifactTitle: "One decision. Shared context.", detail: "“Let’s show the next milestone first. That’s what our clients ask about most.”", result: "Decision connected", context: "Discussion → Task", status: "In progress", lines: ["Decision: milestone first", "Design updated in the brief", "Ready for implementation"] },
+  { id: "deliver", label: "Deliver", icon: GitPullRequest, title: "Follow the work all the way to code.", description: "Connect pull requests and build activity to the work they deliver. See the implementation alongside the original requirement, without retracing the handoff.", artifact: "Linked pull request", artifactTitle: "Add client overview #128", detail: "A project update with its implementation attached. The brief and discussion stay one connection away.", result: "Implementation linked", context: "Pull request → Task", status: "In review", lines: ["feature/client-overview", "Review linked to AMP-104", "Original requirement retained"] },
+  { id: "business", label: "Run the business", icon: BriefcaseBusiness, title: "Connect delivery to the bigger picture.", description: "Bring project progress into client updates and time reporting. The long-term vision connects the work your team delivers to the business you run.", artifact: "Client update", artifactTitle: "Your portal is taking shape", detail: "The client overview is ready for review. Next up: feedback and the delivery milestone.", result: "Client context shared", context: "Task → Client update", status: "Ready for review", lines: ["Deliverable: client overview", "Sample time entry: 3 hours", "Next milestone: client feedback"] },
+] as const;
+
+export const moduleGroups = [
+  { icon: Layers3, number: "01", title: "Deliver software.", description: "A clear path from the backlog to the next release.", modules: [{ name: "Projects & Kanban", status: "Preview" }, { name: "Git & CI integrations", status: "Planned" }, { name: "Monitoring", status: "Planned" }] },
+  { icon: BookOpen, number: "02", title: "Keep the context.", description: "Knowledge and conversations close to the work.", modules: [{ name: "Docs, chat & files", status: "Planned" }, { name: "Knowledge & notifications", status: "Planned" }, { name: "Contextual AI assistance", status: "Planned" }] },
+  { icon: BriefcaseBusiness, number: "03", title: "Run your business.", description: "Connect team delivery with client relationships.", modules: [{ name: "CRM & client portal", status: "Planned" }, { name: "Time tracking & people", status: "Planned" }, { name: "Analytics & billing", status: "Planned" }] },
+] as const;
+
+// Availability reviewed 2026-10-29 against project.md / phases.md and the local
+// sample-data board. These labels do not claim a production release.

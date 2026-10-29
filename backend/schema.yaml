@@ -1,0 +1,1798 @@
+openapi: 3.0.3
+info:
+  title: amops DevOS API
+  version: 1.0.0
+  description: OpenAPI 3.0 specification for amops Developer and Business Operating
+    System
+paths:
+  /api/v1/auth/token/:
+    post:
+      operationId: v1_auth_token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /api/v1/auth/token/refresh/:
+    post:
+      operationId: v1_auth_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/v1/epics/:
+    get:
+      operationId: v1_epics_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEpicList'
+          description: ''
+    post:
+      operationId: v1_epics_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Epic'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Epic'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Epic'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Epic'
+          description: ''
+  /api/v1/epics/{id}/:
+    get:
+      operationId: v1_epics_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this epic.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Epic'
+          description: ''
+    put:
+      operationId: v1_epics_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this epic.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Epic'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Epic'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Epic'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Epic'
+          description: ''
+    patch:
+      operationId: v1_epics_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this epic.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEpic'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEpic'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEpic'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Epic'
+          description: ''
+    delete:
+      operationId: v1_epics_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this epic.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/labels/:
+    get:
+      operationId: v1_labels_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLabelList'
+          description: ''
+    post:
+      operationId: v1_labels_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Label'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Label'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Label'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Label'
+          description: ''
+  /api/v1/labels/{id}/:
+    get:
+      operationId: v1_labels_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this label.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Label'
+          description: ''
+    put:
+      operationId: v1_labels_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this label.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Label'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Label'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Label'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Label'
+          description: ''
+    patch:
+      operationId: v1_labels_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this label.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedLabel'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedLabel'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedLabel'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Label'
+          description: ''
+    delete:
+      operationId: v1_labels_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this label.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/milestones/:
+    get:
+      operationId: v1_milestones_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMilestoneList'
+          description: ''
+    post:
+      operationId: v1_milestones_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Milestone'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Milestone'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Milestone'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Milestone'
+          description: ''
+  /api/v1/milestones/{id}/:
+    get:
+      operationId: v1_milestones_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this milestone.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Milestone'
+          description: ''
+    put:
+      operationId: v1_milestones_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this milestone.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Milestone'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Milestone'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Milestone'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Milestone'
+          description: ''
+    patch:
+      operationId: v1_milestones_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this milestone.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMilestone'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMilestone'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMilestone'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Milestone'
+          description: ''
+    delete:
+      operationId: v1_milestones_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this milestone.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/projects/:
+    get:
+      operationId: v1_projects_list
+      summary: List projects in current tenant workspace
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProjectList'
+          description: ''
+    post:
+      operationId: v1_projects_create
+      summary: Create a new project
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Project'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Project'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+  /api/v1/projects/{id}/:
+    get:
+      operationId: v1_projects_retrieve
+      summary: Get project details
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this project.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+    put:
+      operationId: v1_projects_update
+      summary: Update project details
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this project.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Project'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Project'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+    patch:
+      operationId: v1_projects_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this project.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProject'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProject'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProject'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+    delete:
+      operationId: v1_projects_destroy
+      summary: Delete a project
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this project.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/subtasks/:
+    get:
+      operationId: v1_subtasks_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSubtaskList'
+          description: ''
+    post:
+      operationId: v1_subtasks_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subtask'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Subtask'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Subtask'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subtask'
+          description: ''
+  /api/v1/subtasks/{id}/:
+    get:
+      operationId: v1_subtasks_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this subtask.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subtask'
+          description: ''
+    put:
+      operationId: v1_subtasks_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this subtask.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subtask'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Subtask'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Subtask'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subtask'
+          description: ''
+    patch:
+      operationId: v1_subtasks_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this subtask.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSubtask'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSubtask'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSubtask'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subtask'
+          description: ''
+    delete:
+      operationId: v1_subtasks_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this subtask.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/tasks/:
+    get:
+      operationId: v1_tasks_list
+      summary: List tasks with filtering and ordering
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTaskList'
+          description: ''
+    post:
+      operationId: v1_tasks_create
+      summary: Create a new task
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Task'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Task'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+          description: ''
+  /api/v1/tasks/{id}/:
+    get:
+      operationId: v1_tasks_retrieve
+      summary: Get task details
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this task.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+          description: ''
+    put:
+      operationId: v1_tasks_update
+      summary: Update a task
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this task.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Task'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Task'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+          description: ''
+    patch:
+      operationId: v1_tasks_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this task.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTask'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTask'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTask'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+          description: ''
+    delete:
+      operationId: v1_tasks_destroy
+      summary: Delete a task
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this task.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/tasks/reorder/:
+    post:
+      operationId: v1_tasks_reorder_create
+      description: |-
+        Updates task status and order position for drag-and-drop Kanban updates.
+        Accepts a list of: [{ "id": "...", "status": "IN_PROGRESS", "order": 1.5 }]
+      summary: Batch reorder tasks on Kanban board
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/TaskReorder'
+          application/x-www-form-urlencoded:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/TaskReorder'
+          multipart/form-data:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/TaskReorder'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTaskList'
+          description: ''
+components:
+  schemas:
+    Epic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        project:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 150
+        summary:
+          type: string
+        color:
+          type: string
+          maxLength: 7
+        status:
+          $ref: '#/components/schemas/EpicStatusEnum'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - project
+      - title
+    EpicStatusEnum:
+      enum:
+      - PLANNED
+      - IN_PROGRESS
+      - COMPLETED
+      type: string
+      description: |-
+        * `PLANNED` - Planned
+        * `IN_PROGRESS` - In Progress
+        * `COMPLETED` - Completed
+    Label:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        project:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 50
+        color:
+          type: string
+          maxLength: 7
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - name
+      - project
+    Milestone:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        project:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 150
+        description:
+          type: string
+        due_date:
+          type: string
+          format: date
+          nullable: true
+        status:
+          $ref: '#/components/schemas/MilestoneStatusEnum'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - project
+      - title
+    MilestoneStatusEnum:
+      enum:
+      - OPEN
+      - CLOSED
+      type: string
+      description: |-
+        * `OPEN` - Open
+        * `CLOSED` - Closed
+    PaginatedEpicList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Epic'
+    PaginatedLabelList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Label'
+    PaginatedMilestoneList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Milestone'
+    PaginatedProjectList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+    PaginatedSubtaskList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Subtask'
+    PaginatedTaskList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+    PatchedEpic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        project:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 150
+        summary:
+          type: string
+        color:
+          type: string
+          maxLength: 7
+        status:
+          $ref: '#/components/schemas/EpicStatusEnum'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedLabel:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        project:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 50
+        color:
+          type: string
+          maxLength: 7
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedMilestone:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        project:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 150
+        description:
+          type: string
+        due_date:
+          type: string
+          format: date
+          nullable: true
+        status:
+          $ref: '#/components/schemas/MilestoneStatusEnum'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedProject:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        workspace:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 150
+        key:
+          type: string
+          maxLength: 10
+        description:
+          type: string
+        owner:
+          type: string
+          format: uuid
+        owner_email:
+          type: string
+          format: email
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/ProjectStatusEnum'
+        target_date:
+          type: string
+          format: date
+          nullable: true
+        task_count:
+          type: integer
+          readOnly: true
+          default: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedSubtask:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        task:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 255
+        is_completed:
+          type: boolean
+        order:
+          type: number
+          format: double
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedTask:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        project:
+          type: string
+          format: uuid
+        identifier:
+          type: string
+          readOnly: true
+        task_number:
+          type: integer
+          readOnly: true
+        epic:
+          type: string
+          format: uuid
+          nullable: true
+        milestone:
+          type: string
+          format: uuid
+          nullable: true
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        type:
+          $ref: '#/components/schemas/TypeEnum'
+        status:
+          $ref: '#/components/schemas/Status1f5Enum'
+        priority:
+          $ref: '#/components/schemas/PriorityEnum'
+        assignee:
+          type: string
+          format: uuid
+          nullable: true
+        assignee_email:
+          type: string
+          format: email
+          readOnly: true
+        reporter:
+          type: string
+          format: uuid
+        reporter_email:
+          type: string
+          format: email
+          readOnly: true
+        labels:
+          type: array
+          items:
+            type: string
+            format: uuid
+        label_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Label'
+          readOnly: true
+        story_points:
+          type: integer
+          maximum: 32767
+          minimum: 0
+          nullable: true
+        due_date:
+          type: string
+          format: date
+          nullable: true
+        order:
+          type: number
+          format: double
+        subtasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Subtask'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PriorityEnum:
+      enum:
+      - LOW
+      - MEDIUM
+      - HIGH
+      - URGENT
+      type: string
+      description: |-
+        * `LOW` - Low
+        * `MEDIUM` - Medium
+        * `HIGH` - High
+        * `URGENT` - Urgent
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        workspace:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 150
+        key:
+          type: string
+          maxLength: 10
+        description:
+          type: string
+        owner:
+          type: string
+          format: uuid
+        owner_email:
+          type: string
+          format: email
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/ProjectStatusEnum'
+        target_date:
+          type: string
+          format: date
+          nullable: true
+        task_count:
+          type: integer
+          readOnly: true
+          default: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - key
+      - name
+      - owner
+      - owner_email
+      - task_count
+      - updated_at
+      - workspace
+    ProjectStatusEnum:
+      enum:
+      - PLANNED
+      - ACTIVE
+      - PAUSED
+      - COMPLETED
+      - ARCHIVED
+      type: string
+      description: |-
+        * `PLANNED` - Planned
+        * `ACTIVE` - Active
+        * `PAUSED` - Paused
+        * `COMPLETED` - Completed
+        * `ARCHIVED` - Archived
+    Status1f5Enum:
+      enum:
+      - BACKLOG
+      - TODO
+      - IN_PROGRESS
+      - IN_REVIEW
+      - DONE
+      - CANCELLED
+      type: string
+      description: |-
+        * `BACKLOG` - Backlog
+        * `TODO` - To Do
+        * `IN_PROGRESS` - In Progress
+        * `IN_REVIEW` - In Review
+        * `DONE` - Done
+        * `CANCELLED` - Cancelled
+    Subtask:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        task:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 255
+        is_completed:
+          type: boolean
+        order:
+          type: number
+          format: double
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - task
+      - title
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        project:
+          type: string
+          format: uuid
+        identifier:
+          type: string
+          readOnly: true
+        task_number:
+          type: integer
+          readOnly: true
+        epic:
+          type: string
+          format: uuid
+          nullable: true
+        milestone:
+          type: string
+          format: uuid
+          nullable: true
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        type:
+          $ref: '#/components/schemas/TypeEnum'
+        status:
+          $ref: '#/components/schemas/Status1f5Enum'
+        priority:
+          $ref: '#/components/schemas/PriorityEnum'
+        assignee:
+          type: string
+          format: uuid
+          nullable: true
+        assignee_email:
+          type: string
+          format: email
+          readOnly: true
+        reporter:
+          type: string
+          format: uuid
+        reporter_email:
+          type: string
+          format: email
+          readOnly: true
+        labels:
+          type: array
+          items:
+            type: string
+            format: uuid
+        label_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Label'
+          readOnly: true
+        story_points:
+          type: integer
+          maximum: 32767
+          minimum: 0
+          nullable: true
+        due_date:
+          type: string
+          format: date
+          nullable: true
+        order:
+          type: number
+          format: double
+        subtasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Subtask'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - assignee_email
+      - created_at
+      - id
+      - identifier
+      - label_items
+      - project
+      - reporter
+      - reporter_email
+      - subtasks
+      - task_number
+      - title
+      - updated_at
+    TaskReorder:
+      type: object
+      description: Payload for smooth drag-and-drop Kanban updates.
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/Status1f5Enum'
+        order:
+          type: number
+          format: double
+      required:
+      - id
+      - order
+      - status
+    TokenObtainPair:
+      type: object
+      properties:
+        email:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - email
+      - password
+      - refresh
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    TypeEnum:
+      enum:
+      - TASK
+      - BUG
+      - STORY
+      type: string
+      description: |-
+        * `TASK` - Task
+        * `BUG` - Bug
+        * `STORY` - Story
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,36 @@
+[project]
+name = "amops"
+version = "0.1.0"
+description = "amops Developer OS - Modular Multi-Tenant Business Operating System"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=6.1.2",
+    "djangorestframework>=3.18.3",
+    "djangorestframework-simplejwt>=5.5.1",
+    "drf-spectacular>=0.30.0",
+    "django-tenants>=3.14.0",
+    "psycopg[binary]>=3.3.6",
+    "celery>=5.6.3",
+    "redis>=8.1.0",
+    "channels>=4.3.2",
+    "daphne>=4.2.3",
+    "django-cors-headers>=4.9.0",
+    "python-dotenv>=1.2.4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-django>=4.9.0",
+    "ruff>=0.9.0",
+    "mypy>=1.14.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["test_*.py", "*_test.py"]
