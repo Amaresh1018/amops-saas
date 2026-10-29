@@ -1,5 +1,7 @@
-FROM ghcr.io/astral-sh/uv:0.9.5 AS dependencies
+FROM ghcr.io/astral-sh/uv:0.9.5 AS uv
 
+FROM python:3.12-slim AS dependencies
+COPY --from=uv /uv /uvx /bin/
 ENV UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy
 WORKDIR /app
