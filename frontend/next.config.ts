@@ -5,9 +5,6 @@ const nextConfig: NextConfig = {
   output: "standalone",
   cacheComponents: true,
   partialPrefetching: true,
-  experimental: {
-    cpus: 2,
-  },
   turbopack: {
     rules: {
       "*.css": {
