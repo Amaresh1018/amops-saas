@@ -201,18 +201,25 @@
 @keyframes scene-in { from { opacity: 0; transform: translate(-50%, calc(-50% + 18px)) scale(.96); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
 @keyframes scene-pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--primary) 40%, transparent); } 50% { box-shadow: 0 0 0 9px color-mix(in srgb, var(--primary) 0%, transparent); } }
 @keyframes hero-reveal { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes section-reveal { from { opacity: .72; transform: translateY(18px); } 45%, to { opacity: 1; transform: translateY(0); } }
 @media (prefers-reduced-motion: no-preference) {
   :global(html) { scroll-behavior: smooth; }
   .heroCopy { animation: hero-reveal 700ms cubic-bezier(.2,.8,.2,1) both; }
   .heroVisual { animation: hero-reveal 780ms 110ms cubic-bezier(.2,.8,.2,1) both; }
-}
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .manifesto, .sectionHeading, .moduleGrid, .foundation, .architecture > div, .roadmapGrid, .closing { animation: section-reveal linear both; animation-timeline: view(); animation-range: entry 8% cover 32%; }
-    .moduleCard:nth-child(2), .architectureList article:nth-child(2), .roadmapGrid article:nth-child(2) { animation-delay: 80ms; }
-    .moduleCard:nth-child(3), .architectureList article:nth-child(3), .roadmapGrid article:nth-child(3) { animation-delay: 160ms; }
+
+  .landing[data-motion-ready="true"] [data-reveal] {
+    opacity: 0;
+    transform: translateY(30px) scale(.985);
+    transition: opacity 620ms cubic-bezier(.2,.8,.2,1), transform 620ms cubic-bezier(.2,.8,.2,1);
+    will-change: opacity, transform;
   }
+  .landing[data-motion-ready="true"] [data-reveal="heading"] { transform: translateY(20px); transition-duration: 540ms; }
+  .landing[data-motion-ready="true"] [data-reveal="foundation"] { transform: translateY(18px); }
+  .landing[data-motion-ready="true"] [data-revealed="true"] { opacity: 1; transform: none; }
+
+  .landing[data-motion-ready="true"] .moduleCard[data-reveal="card"]:nth-child(2),
+  .landing[data-motion-ready="true"] .roadmapGrid [data-reveal="card"]:nth-child(2) { transition-delay: 90ms; }
+  .landing[data-motion-ready="true"] .moduleCard[data-reveal="card"]:nth-child(3),
+  .landing[data-motion-ready="true"] .roadmapGrid [data-reveal="card"]:nth-child(3) { transition-delay: 180ms; }
 }
 @media (max-width: 1100px) {
   .brandSuffix { display: none; }
