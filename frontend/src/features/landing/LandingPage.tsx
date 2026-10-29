@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowRight, ArrowUpRight, Code2, Layers3, LockKeyhole, Network, Search, ShieldCheck, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -18,13 +18,43 @@ function PreviewButton({ onClick }: { onClick: () => void }) {
 }
 
 export function LandingPage({ onEnterApp }: LandingPageProps) {
+  const landing = useRef<HTMLDivElement>(null);
   const [activeStep, setActiveStep] = useState(0);
   const [playing, setPlaying] = useState(true);
   const advance = useCallback(() => setActiveStep(step => (step + 1) % storySteps.length), []);
   const selectStep = useCallback((index: number) => { setActiveStep(index); setPlaying(false); }, []);
+
+  useEffect(() => {
+    const root = landing.current;
+    const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+
+    const updateProgress = () => {
+      frame = 0;
+      if (!root || reduceMotion.matches) return;
+      const range = document.documentElement.scrollHeight - window.innerHeight;
+      root.style.setProperty("--scroll-progress", String(range > 0 ? window.scrollY / range : 0));
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(updateProgress);
+    };
+
+    updateProgress();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    reduceMotion.addEventListener("change", updateProgress);
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      reduceMotion.removeEventListener("change", updateProgress);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
+
   return (
-    <div className={styles.landing}>
+    <div className={styles.landing} ref={landing}>
       <a className={styles.skipLink} href="#main">Skip to content</a>
+      <div aria-hidden="true" className={styles.scrollProgress}><span /></div>
       <header className={styles.header}>
         <div className={styles.container + " " + styles.navbar}>
           <a className={styles.brand} href="#main" aria-label="amops home"><span className={styles.brandMark}><Layers3 size={21} /></span>amops<span className={styles.brandSuffix}>/ workspace</span></a>
