@@ -156,6 +156,7 @@ This document preserves historical context, architectural decisions, and current
 | **2026-10-08** | Built Phase 1 interactive Drag-and-Drop Kanban Board UI (`frontend/src/features/kanban/`) and backend models (`apps.projects`). Migrated `demo` schema, exported OpenAPI spec, and verified 5/5 passing pytest tests. | Antigravity AI Agent |
 | **2026-10-07** | Scaffolded Phase 0 foundation: Django 6.1.2 LTS backend with `django-tenants`, DRF, accounts/orgs apps, Next.js 16.4 App Router frontend, and Docker Compose stack. | Antigravity AI Agent |
 | **2026-10-29** | Connected the amops workspace to the new GitHub repository baseline; added a locked Python dependency graph, CI checks, production container builds, and GHCR image delivery. Provider-specific deployment is pending a hosting target. | Codex |
+| **2026-10-29** | Stabilized hosted CI on Ubuntu 24.04, scoped Ruff to core correctness checks, and bundled licensed Geist font files locally so clean Next.js builds do not fetch fonts at build time. | Codex |
 
 ---
 
