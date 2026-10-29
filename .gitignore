@@ -31,6 +31,10 @@ MANIFEST
 .tox/
 .nox/
 .codex/
+.agents/
+
+# Local agent guidance and working documentation
+*.md
 
 # Django
 *.log
